@@ -20,10 +20,13 @@ namespace TimeTrax.Web.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Tasks> Tasks { get; set; }
 
         public static ApplicationDbContext Create()
         {
