@@ -9,8 +9,19 @@ namespace TimeTrax.Web.Models
     
     public class Staff
     {
+        public Staff()
+        {
+            IsActive = true;
+        }
+
         [Display(Name = "Staff Id")]
         public int StaffId { get; set; }
+
+        [Display(Name = "Staff Name")]
+        public string FullName
+        {
+            get { return LastName + ", " + FirstName; }
+        }
 
         [Required]
         [Display(Name = "Staff Type")]
