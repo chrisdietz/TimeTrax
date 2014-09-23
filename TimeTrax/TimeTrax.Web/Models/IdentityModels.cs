@@ -27,6 +27,7 @@ namespace TimeTrax.Web.Models
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<TimeEntry> TimeEntries { get; set; }
 
         public static ApplicationDbContext Create()
         {
