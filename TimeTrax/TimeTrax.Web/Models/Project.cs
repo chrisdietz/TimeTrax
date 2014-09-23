@@ -9,6 +9,11 @@ namespace TimeTrax.Web.Models
 {
     public class Project
     {
+        public Project()
+        {
+            IsActive = true;
+        }
+
         [Display(Name = "Project Id")]
         public int ProjectId { get; set; }
 
