@@ -10,6 +10,11 @@ namespace TimeTrax.Web.Models
     [TableName("Tasks")]
     public class Tasks
     {
+        public Tasks()
+        {
+            IsActive = true;
+        }
+
         [Display(Name = "Task Id")]
         public int TasksId { get; set; }
 

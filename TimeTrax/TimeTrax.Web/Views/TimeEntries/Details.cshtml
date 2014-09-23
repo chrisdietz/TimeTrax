@@ -1,0 +1,66 @@
+﻿@model TimeTrax.Web.Models.TimeEntry
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TimeEntry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.ProjectName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Staff.StaffType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Staff.StaffType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tasks.TaskName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tasks.TaskName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeEntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeEntryDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TimeEntryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,11 @@ namespace TimeTrax.Web.Models
 {
     public class TimeEntry
     {
+        public TimeEntry()
+        {
+            IsActive = true;
+        }
+
         public int TimeEntryId { get; set; }
 
         [Required]
@@ -36,6 +42,7 @@ namespace TimeTrax.Web.Models
 
         [Required]
         [Display(Name = "Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime TimeEntryDate { get; set; }
 
         // Audit fields
@@ -66,9 +73,13 @@ namespace TimeTrax.Web.Models
 
 
         // Navigation properties
+        [ForeignKey("StaffId")]
         public virtual Staff Staff { get; set; }
+        [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
+        [ForeignKey("TaskId")]
         public virtual Tasks Tasks { get; set; }
+
 
     }
 }
