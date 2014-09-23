@@ -2,26 +2,41 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Web;
 
 namespace TimeTrax.Web.Models
 {
-    public class Project
+    public class TimeEntry
     {
-        [Display(Name = "Project Id")]
+        public int TimeEntryId { get; set; }
+
+        [Required]
+        [Display(Name = "Staff")]
+        public int StaffId { get; set; }
+
+        [Required]
+        [Display(Name = "Project")]
         public int ProjectId { get; set; }
 
         [Required]
-        [Display(Name = "Project Name")]
-        [StringLength(50)]
-        public string ProjectName { get; set; }
+        [Display(Name = "Task")]
+        public int TaskId { get; set; }
 
         [Required]
-        [Display(Name = "Description")]
+        [Display(Name = "Hours")]
+        [DisplayFormat(DataFormatString = "{0:#.##}")]
+        [Range(0, 24)]
+        public decimal Hours { get; set; }
+
+        [Required]
+        [Display(Name = "Notes")]
         [StringLength(200)]
         [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
+        public string Notes { get; set; }
+
+        [Required]
+        [Display(Name = "Date")]
+        public DateTime TimeEntryDate { get; set; }
 
         // Audit fields
         [ScaffoldColumn(false)]
@@ -49,9 +64,11 @@ namespace TimeTrax.Web.Models
         [StringLength(100)]
         public string CreatedBy { get; set; }
 
-        // Navigation properties
-        public virtual ICollection<TimeEntry> TimeEntries { get; set; }
 
-        
+        // Navigation properties
+        public virtual Staff Staff { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual Tasks Tasks { get; set; }
+
     }
 }

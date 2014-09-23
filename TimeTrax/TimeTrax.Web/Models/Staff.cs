@@ -64,6 +64,9 @@ namespace TimeTrax.Web.Models
         [StringLength(100)]
         public string CreatedBy { get; set; }
 
+        // Navigation properties
+        public virtual ICollection<TimeEntry> TimeEntries { get; set; }
+
     }
 
     //Enum Values
