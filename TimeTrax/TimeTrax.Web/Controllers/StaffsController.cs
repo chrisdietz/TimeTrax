@@ -38,6 +38,10 @@ namespace TimeTrax.Web.Controllers
         // GET: Staffs/Create
         public ActionResult Create()
         {
+            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
+                             select new { ID = d.ToString(), Name = d.ToString() };
+
+            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name");
             return View();
         }
 
@@ -70,6 +74,10 @@ namespace TimeTrax.Web.Controllers
             {
                 return HttpNotFound();
             }
+            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
+                             select new { ID = d.ToString(), Name = d.ToString() };
+
+            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name", staff.StaffType);
             return View(staff);
         }
 
