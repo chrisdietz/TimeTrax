@@ -17,7 +17,7 @@ namespace TimeTrax.Web.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            return View(db.Tasks.ToList());
+            return View(db.Tasks.Where(s => s.IsActive).ToList());
         }
 
         // GET: Tasks/Details/5
@@ -50,6 +50,12 @@ namespace TimeTrax.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                tasks.CreatedBy = User.Identity.Name;
+                tasks.UpdatedBy = User.Identity.Name;
+                tasks.IsActive = true;
+                tasks.CreatedDate = DateTime.Now;
+                tasks.UpdatedDate = DateTime.Now;
+
                 db.Tasks.Add(tasks);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -110,7 +116,7 @@ namespace TimeTrax.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Tasks tasks = db.Tasks.Find(id);
-            db.Tasks.Remove(tasks);
+            tasks.IsActive = false; //db.Tasks.Remove(tasks);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

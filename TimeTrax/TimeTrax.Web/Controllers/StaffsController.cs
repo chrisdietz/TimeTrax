@@ -17,7 +17,8 @@ namespace TimeTrax.Web.Controllers
         // GET: Staffs
         public ActionResult Index()
         {
-            return View(db.Staffs.ToList());
+            var model = db.Staffs.Where(s => s.IsActive).ToList();
+            return View();
         }
 
         // GET: Staffs/Details/5
@@ -53,7 +54,7 @@ namespace TimeTrax.Web.Controllers
         public ActionResult Create([Bind(Include = "StaffId,StaffType,FirstName,LastName,DateOfBirth,EmailAddress,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] Staff staff)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 db.Staffs.Add(staff);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -118,7 +119,7 @@ namespace TimeTrax.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Staff staff = db.Staffs.Find(id);
-            db.Staffs.Remove(staff);
+            staff.IsActive = false; // Marks staff InActive //db.Staffs.Remove(staff); // deletes staff
             db.SaveChanges();
             return RedirectToAction("Index");
         }
