@@ -19,8 +19,9 @@ namespace TimeTrax.Web.Models
         [Display(Name = "Staff Id")]
         public int StaffId { get; set; }
 
-        [Display(Name = "User Id")]
-        public int UserId { get; set; }
+        // Removed, this is Auto created by fluent api
+        //[Display(Name = "User Id")]
+        //public int UserId { get; set; }
 
         [Display(Name = "Staff Name")]
         public string FullName
