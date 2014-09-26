@@ -10,116 +10,113 @@ using TimeTrax.Web.Models;
 
 namespace TimeTrax.Web.Controllers
 {
-    public class StaffsController : Controller
+    public class TasksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Staffs
+        // GET: Tasks
         public ActionResult Index()
         {
-            var model = db.Staffs.Where(s => s.IsActive).ToList();
-            return View();
+            return View(db.Tasks.Where(s => s.IsActive).ToList());
         }
 
-        // GET: Staffs/Details/5
+        // GET: Tasks/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.Staffs.Find(id);
-            if (staff == null)
+            Tasks tasks = db.Tasks.Find(id);
+            if (tasks == null)
             {
                 return HttpNotFound();
             }
-            return View(staff);
+            return View(tasks);
         }
 
-        // GET: Staffs/Create
+        // GET: Tasks/Create
         public ActionResult Create()
         {
-            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
-                             select new { ID = d.ToString(), Name = d.ToString() };
-
-            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name");
             return View();
         }
 
-        // POST: Staffs/Create
+        // POST: Tasks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StaffId,StaffType,FirstName,LastName,DateOfBirth,EmailAddress,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] Staff staff)
+        public ActionResult Create([Bind(Include = "TasksId,TaskName,Description,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] Tasks tasks)
         {
             if (ModelState.IsValid)
-            {                
-                db.Staffs.Add(staff);
+            {
+                tasks.CreatedBy = User.Identity.Name;
+                tasks.UpdatedBy = User.Identity.Name;
+                tasks.IsActive = true;
+                tasks.CreatedDate = DateTime.Now;
+                tasks.UpdatedDate = DateTime.Now;
+
+                db.Tasks.Add(tasks);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(staff);
+            return View(tasks);
         }
 
-        // GET: Staffs/Edit/5
+        // GET: Tasks/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.Staffs.Find(id);
-            if (staff == null)
+            Tasks tasks = db.Tasks.Find(id);
+            if (tasks == null)
             {
                 return HttpNotFound();
             }
-            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
-                             select new { ID = d.ToString(), Name = d.ToString() };
-
-            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name", staff.StaffType);
-            return View(staff);
+            return View(tasks);
         }
 
-        // POST: Staffs/Edit/5
+        // POST: Tasks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StaffId,StaffType,FirstName,LastName,DateOfBirth,EmailAddress,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] Staff staff)
+        public ActionResult Edit([Bind(Include = "TasksId,TaskName,Description,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] Tasks tasks)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(staff).State = EntityState.Modified;
+                db.Entry(tasks).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(staff);
+            return View(tasks);
         }
 
-        // GET: Staffs/Delete/5
+        // GET: Tasks/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.Staffs.Find(id);
-            if (staff == null)
+            Tasks tasks = db.Tasks.Find(id);
+            if (tasks == null)
             {
                 return HttpNotFound();
             }
-            return View(staff);
+            return View(tasks);
         }
 
-        // POST: Staffs/Delete/5
+        // POST: Tasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Staff staff = db.Staffs.Find(id);
-            staff.IsActive = false; // Marks staff InActive //db.Staffs.Remove(staff); // deletes staff
+            Tasks tasks = db.Tasks.Find(id);
+            tasks.IsActive = false; //db.Tasks.Remove(tasks);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
