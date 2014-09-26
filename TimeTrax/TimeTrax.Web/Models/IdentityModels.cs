@@ -37,9 +37,10 @@ namespace TimeTrax.Web.Models
         {
             //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             // ASP User
-            modelBuilder.Entity<Staff>()
-                        .HasOptional<ApplicationUser>(staff => staff.User)
-                        .WithOptionalDependent(p => p.Staff);
+            modelBuilder.Entity<ApplicationUser>()
+                        .HasRequired<Staff>(u => u.Staff)
+                        .WithOptional(s => s.User)
+                        .WillCascadeOnDelete(true);
 
             base.OnModelCreating(modelBuilder);
         }
