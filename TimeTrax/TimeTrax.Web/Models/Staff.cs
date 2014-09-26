@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,8 +15,12 @@ namespace TimeTrax.Web.Models
             IsActive = true;
         }
 
+        //[Key, ForeignKey("User")]
         [Display(Name = "Staff Id")]
         public int StaffId { get; set; }
+
+        [Display(Name = "User Id")]
+        public int UserId { get; set; }
 
         [Display(Name = "Staff Name")]
         public string FullName
@@ -77,6 +82,10 @@ namespace TimeTrax.Web.Models
 
         // Navigation properties
         public virtual ICollection<TimeEntry> TimeEntries { get; set; }
+
+        // ForeignKey => dbo.IdentityUser
+        //[ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
 
     }
 
