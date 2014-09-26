@@ -142,6 +142,11 @@ namespace TimeTrax.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
+                             select new { ID = d.ToString(), Name = d.ToString() };
+
+            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name");
+
             return View();
         }
 
@@ -154,7 +159,25 @@ namespace TimeTrax.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var staff = new Staff()
+                {
+                    EmailAddress = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DateOfBirth = model.DateOfBirth,
+                    StaffType = model.StaffType,
+                    IsActive = true,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    CreatedBy = User.Identity.Name,
+                    UpdatedBy = User.Identity.Name,                    
+                };
+                var user = new ApplicationUser 
+                { 
+                    UserName = model.Email, 
+                    Email = model.Email,
+                    Staff = staff,
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -172,6 +195,11 @@ namespace TimeTrax.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            var staffTypes = from StaffType d in Enum.GetValues(typeof(StaffType))
+                             select new { ID = d.ToString(), Name = d.ToString() };
+
+            ViewBag.StaffType = new SelectList(staffTypes, "ID", "Name");
+
             return View(model);
         }
 
