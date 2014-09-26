@@ -184,3 +184,7 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+TimeTrax/PublishScripts/AzureWebsitePublishModule.psm1
+TimeTrax/PublishScripts/AzureWebsitePublishModule.psm1
+TimeTrax/PublishScripts/Configurations/TimeTraxWeb-WAWS-dev.json
+TimeTrax/PublishScripts/Publish-WebApplicationWebsite.ps1
