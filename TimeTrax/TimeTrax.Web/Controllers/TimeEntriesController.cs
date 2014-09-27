@@ -99,8 +99,9 @@ namespace TimeTrax.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", timeEntry.ProjectId);
-            ViewBag.StaffId = new SelectList(db.Staffs, "StaffId", "FullName", timeEntry.StaffId);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.StaffId = new SelectList(db.Staffs.Where(s => s.IsActive && s.StaffId == user.Staff.StaffId), "StaffId", "FullName", user.Staff.StaffId);            
+            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", timeEntry.ProjectId);            
             ViewBag.TaskId = new SelectList(db.Tasks, "TasksId", "TaskName", timeEntry.TaskId);
             return View(timeEntry);
         }
@@ -118,8 +119,9 @@ namespace TimeTrax.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", timeEntry.ProjectId);
-            ViewBag.StaffId = new SelectList(db.Staffs, "StaffId", "FullName", timeEntry.StaffId);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.StaffId = new SelectList(db.Staffs.Where(s => s.IsActive && s.StaffId == user.Staff.StaffId), "StaffId", "FullName", user.Staff.StaffId);            
+            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", timeEntry.ProjectId);            
             ViewBag.TaskId = new SelectList(db.Tasks, "TasksId", "TaskName", timeEntry.TaskId);
             return View(timeEntry);
         }
