@@ -16,10 +16,10 @@ namespace TimeTrax.Web
         protected void Application_Start()
         {
             // To initialize the database, RUN ONLY ONE TIME!!!
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
-            var db = new ApplicationDbContext();
-            var seed = new SeedDatabaseCommand(db);
-            seed.SeedDatabase();
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            //var db = new ApplicationDbContext();
+            //var seed = new SeedDatabaseCommand(db);
+            //seed.SeedDatabase();
             
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
