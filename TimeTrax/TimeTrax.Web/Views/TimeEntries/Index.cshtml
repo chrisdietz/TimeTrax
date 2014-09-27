@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TimeTrax.Web.Models.TimeEntry>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Timesheet";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title - @ViewBag.CurrentUser</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,10 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Project.ProjectName)
+            @Html.DisplayNameFor(model => model.Staff.StaffType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Staff.StaffType)
+            @Html.DisplayNameFor(model => model.Staff.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Tasks.TaskName)
@@ -35,10 +38,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Project.ProjectName)
+            @Html.DisplayFor(modelItem => item.Staff.StaffType)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Staff.StaffType)
+            @Html.DisplayFor(modelItem => item.Staff.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.ProjectName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Tasks.TaskName)
