@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,12 +14,30 @@ namespace TimeTrax.Web.Controllers
 {
     public class TimeEntriesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //protected ApplicationDbContext db = new ApplicationDbContext();
+        protected ApplicationDbContext db { get; set; }        
+        protected UserManager<ApplicationUser> UserManager { get; set; }
+
+        public TimeEntriesController()
+        {
+            this.db = new ApplicationDbContext();
+            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.db));
+        }
 
         // GET: TimeEntries
         public ActionResult Index()
         {
-            var timeEntries = db.TimeEntries.Include(t => t.Project).Include(t => t.Staff).Include(t => t.Tasks);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return RedirectToAction("Login","Account");
+
+            }
+            var timeEntries = db.TimeEntries
+                                .Include(t => t.Project).Include(t => t.Staff).Include(t => t.Tasks)
+                                .Where(t => t.IsActive && t.StaffId == user.Staff.StaffId);
+
+            ViewBag.CurrentUser = user.Staff.FullName;
             return View(timeEntries.ToList());
         }
 
@@ -39,8 +59,9 @@ namespace TimeTrax.Web.Controllers
         // GET: TimeEntries/Create
         public ActionResult Create()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
             ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName");
-            ViewBag.StaffId = new SelectList(db.Staffs, "StaffId", "FullName");
+            ViewBag.StaffId = new SelectList(db.Staffs.Where(s => s.IsActive && s.StaffId == user.Staff.StaffId), "StaffId", "FullName", user.Staff.StaffId);
             ViewBag.TaskId = new SelectList(db.Tasks, "TasksId", "TaskName");
             return View();
         }
@@ -50,7 +71,7 @@ namespace TimeTrax.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TimeEntryId,StaffId,ProjectId,TaskId,Hours,Notes,TimeEntryDate,IsActive,UpdatedDate,UpdatedBy,CreatedDate,CreatedBy")] TimeEntry timeEntry)
+        public ActionResult Create(TimeEntry timeEntry)
         {
             if (ModelState.IsValid)
             {
@@ -59,8 +80,9 @@ namespace TimeTrax.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            var user = UserManager.FindById(User.Identity.GetUserId());
             ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", timeEntry.ProjectId);
-            ViewBag.StaffId = new SelectList(db.Staffs, "StaffId", "FullName", timeEntry.StaffId);
+            ViewBag.StaffId = new SelectList(db.Staffs.Where(s => s.IsActive && s.StaffId == user.Staff.StaffId), "StaffId", "FullName", timeEntry.StaffId);
             ViewBag.TaskId = new SelectList(db.Tasks, "TasksId", "TaskName", timeEntry.TaskId);
             return View(timeEntry);
         }
