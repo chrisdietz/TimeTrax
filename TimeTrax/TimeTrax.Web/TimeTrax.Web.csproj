@@ -166,6 +166,8 @@
     <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\TimeEntriesController.cs" />
+    <Compile Include="Data\Commands\SeedDatabaseCommand.cs" />
+    <Compile Include="Domain\Initializers\ModelInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
