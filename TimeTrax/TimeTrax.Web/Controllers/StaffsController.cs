@@ -18,7 +18,7 @@ namespace TimeTrax.Web.Controllers
         public ActionResult Index()
         {
             var model = db.Staffs.Where(s => s.IsActive).ToList();
-            return View();
+            return View(model);
         }
 
         // GET: Staffs/Details/5
